@@ -10,8 +10,8 @@ task :npm do
   cp(Dir['node_modules/xterm-addon-fit/lib/*.js', 'node_modules/xterm-addon-fit/lib/*.js.map'],
      'source/Web/Scripts/lib/xterm/')
 
-  cp(Dir['node_modules/xterm-webfont/dist/*.js'],
-     'source/Web/Scripts/lib/xterm/')
+  cp('node_modules/xterm-webfont/dist/index.js',
+     'source/Web/Scripts/lib/xterm/xterm-webfont.js')
 
   cp(Dir['node_modules/xterm/*.css'],
      'source/Web/Css')

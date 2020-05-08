@@ -19,10 +19,10 @@ namespace Web
                     // xterm base.
                     .Include("~/Scripts/lib/xterm/xterm.js")
                     // xterm terminal fitting.
-                    .Include("~/Scripts/lib/xterm/fit.js")
+                    .Include("~/Scripts/lib/xterm/xterm-addon-fit.js")
                     .Include("~/Scripts/lib/css-element-queries/*.js")
                     // Load web font before opening xterm terminal.
-                    .Include("~/Scripts/lib/xterm-webfont-custom/xterm-webfont.js")
+                    .Include("~/Scripts/lib/xterm/xterm-webfont.js")
                     .Include("~/Scripts/lib/fontfaceobserver/fontfaceobserver.js")
                     .ForceOrdered());
 

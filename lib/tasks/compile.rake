@@ -2,6 +2,10 @@
 
 require 'rake/funnel'
 
+task compile: %i(npm) do
+  sh(*%w(npm run tsc))
+end
+
 Rake::Funnel::Tasks::SideBySideSpecs.new(:compile) do |t|
   t.references = 'NUnit.Framework'
   t.enabled = configatron.env == 'production'
@@ -26,7 +30,7 @@ Rake::Funnel::Tasks::Copy.new :compile do |t|
              .exclude('**/*.cs')
              .exclude('**/*.??proj')
              .exclude('**/obj/**/*')
-             .exclude('**/*.map')
+             .exclude('**/*.ts')
              .exclude('**/*-vsdoc.js')
              .exclude('**/bin/*.xml')
              .exclude('**/bin/Web.dll.config')

@@ -5,10 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "karma start --single-run",
-    "test:watch": "karma start"
+    "test:watch": "karma start",
+    "tsc": "tsc"
   },
   "devDependencies": {
-    "css-element-queries": "^0.4.0",
+    "@types/jquery": "^3.3.38",
+    "@types/signalr": "^2.2.36",
+    "css-element-queries": "^1.2.3",
     "jasmine-core": "^3.5.0",
     "jasmine-jquery": "^2.1.1",
     "jquery": "^3.5.1",
@@ -17,7 +20,9 @@
     "karma-jasmine": "^2.0.0",
     "karma-teamcity-reporter": "^1.1.0",
     "signalr": "^2.4.1",
+    "typescript": "^3.8.3",
     "xterm": "^4.5.0",
+    "xterm-addon-fit": "^0.3.0",
     "xterm-webfont": "^2.0.0"
   },
   "repository": {
@@ -30,7 +35,5 @@
     "url": "https://github.com/agross/watchr/issues"
   },
   "homepage": "https://github.com/agross/watchr#readme",
-  "dependencies": {
-    "xterm-addon-fit": "^0.3.0"
-  }
+  "dependencies": {}
 }

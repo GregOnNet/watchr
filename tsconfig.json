@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "es2015",
+    "lib": ["dom", "es2015"],
+    "module": "commonjs",
+    "sourceMap": true,
+  },
+  "include": ["source/Web/Scripts/app/**/*"],
+}
+
+// {
+//   "compilerOptions": {
+//     "target": "es2015",
+//     "lib": ["dom", "es2015"],
+//     "module": "system",
+//     "sourceMap": true,
+//     "outFile": "source/Web/Scripts/app.js",
+//     "traceResolution": true
+//   },
+//   "include": ["source/Web/Scripts/app/**/*"],
+// }
