@@ -4,13 +4,16 @@ task :npm do
 end
 
 task :npm do
-  cp(Dir['node_modules/xterm/dist/*.js', 'node_modules/xterm/dist/*.js.map'],
+  cp(Dir['node_modules/xterm/lib/*.js', 'node_modules/xterm/lib/*.js.map'],
      'source/Web/Scripts/lib/xterm/')
 
-  cp('node_modules/xterm/dist/addons/fit/fit.js',
-     'source/Web/Scripts/lib/xterm/fit.js')
+  cp(Dir['node_modules/xterm-addon-fit/lib/*.js', 'node_modules/xterm-addon-fit/lib/*.js.map'],
+     'source/Web/Scripts/lib/xterm/')
 
-  cp(Dir['node_modules/xterm/dist/*.css'],
+  cp(Dir['node_modules/xterm-webfont/dist/*.js'],
+     'source/Web/Scripts/lib/xterm/')
+
+  cp(Dir['node_modules/xterm/*.css'],
      'source/Web/Css')
 end
 

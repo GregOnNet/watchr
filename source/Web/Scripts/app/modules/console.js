@@ -54,6 +54,9 @@ function Console(parent, welcome, sessionId) {
       }
     });
 
+    terminal.loadAddon(new XtermWebfont())
+    terminal.loadAddon(new FitAddon())
+
     div.terminalInstance = function () {
       return terminal;
     };
