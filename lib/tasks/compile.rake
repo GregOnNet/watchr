@@ -63,6 +63,7 @@ task :compile do
 
   raise 'The generated server.js is empty' if File.size('server.js').zero?
 
+  mkdir_p('build/bin/Web/bin/Scripts/lib')
   mv('server.js',
-     'build/bin/Web/bin/Scripts/lib/signalr')
+     'build/bin/Web/bin/Scripts/lib')
 end
