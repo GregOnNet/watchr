@@ -3,9 +3,7 @@
     "target": "es2015",
     "lib": ["dom", "es2015"],
     "module": "ES2015",
-    "sourceMap": true,
   },
-  "include": ["source/Web/Scripts/**/*"],
 }
 
 // TODO: How can TypeScript errors in VS Code be prevented with the current tsconfig.json?

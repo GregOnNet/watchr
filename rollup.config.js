@@ -1,14 +1,25 @@
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
-import typescript from 'rollup-plugin-typescript2';
+import typescript from '@rollup/plugin-typescript';
+import typescript2 from 'rollup-plugin-typescript2';
+import { terser } from 'rollup-plugin-terser';
 
 export default {
   external: ['jquery'],
   input: 'source/Web/Scripts/index.ts',
-  output: {
-    dir: 'source/Web/Scripts/',
-    format: 'umd',
-  },
+  output: [
+    {
+      file: 'source/Web/Scripts/index.js',
+      format: 'iife',
+      name: 'window',
+      extend: true,
+    },
+    {
+      file: 'source/Web/Scripts/index.min.js',
+      format: 'iife',
+      sourcemap: true,
+    },
+  ],
   plugins: [
     resolve({ browser: true }),
     commonjs({
@@ -17,6 +28,7 @@ export default {
         xterm: ['Terminal'],
       },
     }),
-    typescript(),
+    typescript2(),
+    terser({ include: [/^.+\.min\.js$/] }),
   ],
 };
