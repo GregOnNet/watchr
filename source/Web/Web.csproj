@@ -59,10 +59,11 @@
     <Content Include="Css\xterm.css" />
     <Content Include="paket.references" />
     <Content Include="Css\style.css" />
-    <Content Include="Scripts\lib\css-element-queries\ResizeSensor.js" />
-    <Content Include="Scripts\app\modules\console-hub.js" />
-    <Content Include="Scripts\app\modules\console.js" />
-    <Content Include="Scripts\app\run.js" />
+    <None Include="Scripts\modules\buffered-terminal.ts" />
+    <None Include="Scripts\modules\console-hub.ts" />
+    <None Include="Scripts\modules\single-console.ts" />
+    <None Include="Scripts\index.ts" />
+    <Content Include="Scripts\index.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="deploy.yaml" />
@@ -70,18 +71,9 @@
     <Content Include=".gitignore" />
     <Content Include="Css\.gitignore" />
     <None Include="Index.cshtml" />
-    <Content Include="Scripts\lib\jquery\jquery.js" />
-    <Content Include="Scripts\lib\signalr\jquery.signalR.min.js" />
-    <Content Include="Scripts\lib\xterm\fit.js" />
-    <Content Include="Scripts\lib\xterm\xterm.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Scripts\lib\css-element-queries\.gitignore" />
-    <Content Include="Scripts\lib\xterm\.gitignore" />
-    <Content Include="Scripts\lib\xterm\xterm.js.map" />
-    <Content Include="Scripts\lib\jquery\.gitignore" />
-    <Content Include="Scripts\lib\signalr\.gitignore" />
     <None Include="Web.config.erb" />
   </ItemGroup>
   <ItemGroup>

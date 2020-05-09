@@ -20,8 +20,3 @@ export default {
     typescript(),
   ],
 };
-
-// TODO
-// How to include signalr lib and signalr generated server.js?
-// The latter probably only using the bundle. Is it then loaded in the correct order?
-// How can TypeScript errors in VS Code be prevented with the current tsconfig.json?
