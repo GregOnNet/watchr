@@ -12,19 +12,19 @@ describe(SingleConsole.name, function() {
     setFixtures(_parent);
     setFixtures(_welcome);
 
-    terminal = jasmine.createSpyObj('Terminal', [
+    terminal = jasmine.createSpyObj('BufferedTerminal', [
       'loadWebfontAndOpen',
-      'write',
-      'fit'
+      'writeBuffered',
+      'fit',
     ]);
 
     terminal.loadWebfontAndOpen.and.returnValue(
       new Promise(resolve => resolve(terminal))
     );
 
-    spyOn(window, 'Terminal').and.returnValue(terminal);
+    spyOn(window, 'BufferedTerminal').and.returnValue(terminal);
 
-    _console = new SingleConsole(_parent, _welcome, 'id');
+    _console = new SingleConsole({ parent: _parent, hideOnConnection: _welcome }, 'id');
   });
 
   it('has a session id', function() {
@@ -34,7 +34,7 @@ describe(SingleConsole.name, function() {
   describe('text received', function() {
     describe('new session started', function() {
       beforeEach(done => {
-        _console.text({ StartOffset: 0, Text: 'line 1' }).then(done);
+        _console.textReceived({ StartOffset: 0, Text: 'line 1' }).then(done);
       });
 
       it('hides welcome message', function() {
@@ -77,7 +77,7 @@ describe(SingleConsole.name, function() {
             Text: 'line 1'
           })
           .then(() =>
-            _console.text({ StartOffset: 'line 1'.length, Text: 'line 2' })
+            _console.textReceived({ StartOffset: 'line 1'.length, Text: 'line 2' })
           )
           .then(done);
       });
@@ -96,7 +96,7 @@ describe(SingleConsole.name, function() {
 
     describe('new session started with another session running', function() {
       beforeEach(done =>
-        _console.text({ StartOffset: 0, Text: 'line 1' }).then(done));
+        _console.textReceived({ StartOffset: 0, Text: 'line 1' }).then(done));
 
       it('creates a new terminal', done => {
         var second = new Console(_parent, _welcome, 'id-2');
@@ -111,7 +111,7 @@ describe(SingleConsole.name, function() {
 
     describe('delayed text for new session', function() {
       beforeEach(done =>
-        _console.text({ StartOffset: 42, Text: 'line 2' }).then(done));
+        _console.textReceived({ StartOffset: 42, Text: 'line 2' }).then(done));
 
       it('starts session with delayed text', function() {
         expect(terminal.write).toHaveBeenCalledWith('line 2');
@@ -150,7 +150,7 @@ describe(SingleConsole.name, function() {
               Text: 'late'
             })
             .then(() =>
-              _console.text({
+              _console.textReceived({
                 StartOffset: 'first-late'.length,
                 Text: 'early'
               })
@@ -175,7 +175,7 @@ describe(SingleConsole.name, function() {
 
   describe('session terminated', function() {
     beforeEach(done =>
-      _console.text({ StartOffset: 0, Text: 'line 1' }).then(done));
+      _console.textReceived({ StartOffset: 0, Text: 'line 1' }).then(done));
 
     it('disables the terminal', function() {
       _console.terminate();

@@ -44,7 +44,7 @@ module.exports = function(config) {
       'build/bin/Web/bin/Scripts/lib/server.js',
 
       // Application code.
-      'build/bin/Web/bin/Scripts/index.js',
+      'source/Web/Scripts/index.js',
 
       'node_modules/jasmine-jquery/lib/jasmine-jquery.js',
 
