@@ -1,4 +1,4 @@
-/// <reference path='../../../source/Web/Scripts/app/modules/console-hub.js' />
+/// <reference path='../../../source/Web/Scripts/modules/console-hub.ts' />
 
 describe(ConsoleHub.name, function() {
   beforeEach(function() {
@@ -23,7 +23,7 @@ describe(ConsoleHub.name, function() {
       stateChanged: jasmine.createSpy('stateChanged'),
       start: jasmine.createSpy('start')
                     .and.returnValue($.Deferred().resolve().promise())
-    }; 
+    };
 
     $.hubConnection = jasmine.createSpy('hubConnection')
                              .and.returnValue(this.connection);
@@ -85,10 +85,10 @@ describe(ConsoleHub.name, function() {
 
   describe('running', function() {
     beforeEach(function() {
-      this.console = jasmine.createSpyObj('Console',
+      this.console = jasmine.createSpyObj('SingleConsole',
                                           ['text', 'terminate']);
 
-      spyOn(window, 'Console').and.returnValue(this.console);
+      spyOn(window, 'SingleConsole').and.returnValue(this.console);
 
       new ConsoleHub().setUp(this.window, this.parent, this.welcome);
     });

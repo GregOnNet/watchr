@@ -1,6 +1,6 @@
-/// <reference path='../../../source/Web/Scripts/app/modules/console.js' />
+/// <reference path='../../../source/Web/Scripts/modules/single-console.ts' />
 
-describe(Console.name, function() {
+describe(SingleConsole.name, function() {
   let terminal;
   let _console;
   let _parent;
@@ -24,7 +24,7 @@ describe(Console.name, function() {
 
     spyOn(window, 'Terminal').and.returnValue(terminal);
 
-    _console = new Console(_parent, _welcome, 'id');
+    _console = new SingleConsole(_parent, _welcome, 'id');
   });
 
   it('has a session id', function() {

@@ -17,18 +17,14 @@ module.exports = function(config) {
         spec_dir: 'spec',
 
         // Array of filepaths (and globs) relative to spec_dir to include.
-        spec_files: [
-          '**/*_spec.js'
-        ],
+        spec_files: ['**/*_spec.js'],
 
         // Array of filepaths (and globs) relative to spec_dir to include before
         // jasmine specs.
-        helpers: [
-          'helpers/**/*.js'
-        ],
+        helpers: ['helpers/**/*.js'],
         random: true,
-        stopOnFailure: true
-      }
+        stopOnFailure: true,
+      },
     },
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -36,22 +32,23 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: [
-      'jasmine'
-    ],
+    frameworks: ['jasmine'],
 
     // list of files / patterns to load in the browser
     files: [
-      'source/Web/Scripts/lib/xterm/*.js',
-      'source/Web/Scripts/lib/**/*.js',
-      'source/Web/Scripts/app/modules/**/*.js',
+      // Libraries normally loaded from CDN.
+      'node_modules/jquery/dist/jquery.js',
+      'node_modules/signalr/jquery.signalR.js',
 
       // Generated SignalR proxy (available after build).
-      'build/bin/Web/bin/Scripts/lib/signalr/server.js',
+      'build/bin/Web/bin/Scripts/lib/server.js',
+
+      // Application code.
+      'build/bin/Web/bin/Scripts/index.js',
 
       'node_modules/jasmine-jquery/lib/jasmine-jquery.js',
 
-      'spec/**/*_spec.js'
+      'spec/**/*_spec.js',
     ],
 
     // list of files / patterns to exclude
@@ -85,6 +82,6 @@ module.exports = function(config) {
 
     // Concurrency level
     // how many browser should be started simultaneous
-    concurrency: Infinity
+    concurrency: Infinity,
   });
 };
