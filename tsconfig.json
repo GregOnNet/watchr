@@ -2,20 +2,10 @@
   "compilerOptions": {
     "target": "es2015",
     "lib": ["dom", "es2015"],
-    "module": "commonjs",
+    "module": "ES2015",
     "sourceMap": true,
+    // Required to import jQuery.
+    "allowSyntheticDefaultImports": true,
   },
   "include": ["source/Web/Scripts/app/**/*"],
 }
-
-// {
-//   "compilerOptions": {
-//     "target": "es2015",
-//     "lib": ["dom", "es2015"],
-//     "module": "system",
-//     "sourceMap": true,
-//     "outFile": "source/Web/Scripts/app.js",
-//     "traceResolution": true
-//   },
-//   "include": ["source/Web/Scripts/app/**/*"],
-// }

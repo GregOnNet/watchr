@@ -3,7 +3,8 @@
 require 'rake/funnel'
 
 task compile: %i(npm) do
-  sh(*%w(npm run tsc))
+  sh(*%w(git clean -xdf source/Web/Scripts/app/))
+  sh(*%w(npm run rollup))
 end
 
 Rake::Funnel::Tasks::SideBySideSpecs.new(:compile) do |t|

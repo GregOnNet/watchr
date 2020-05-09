@@ -18,6 +18,10 @@ export class SingleConsole {
     this._sessionId = 'session-' + sessionId.replace(/[\W\s]/g, '_');
   }
 
+  private getContainer(): JQuery<Element> {
+    return this._settings.parent.find('section#' + this._sessionId);
+  }
+
   private getTerminalDiv(element: JQuery<Element>) {
     return element.children().last()[0];
   }
@@ -25,21 +29,20 @@ export class SingleConsole {
   private async findOrCreateTerminal(): Promise<BufferedTerminal> {
     this._settings.hideOnConnection.hide();
 
-    var element = this._settings.parent.find('section#' + this._sessionId);
-
-    if (element.length) {
-      return (this.getTerminalDiv(element) as any).terminalInstance();
+    let container = this.getContainer();
+    if (container.length) {
+      return (this.getTerminalDiv(container) as any).terminalInstance();
     }
 
-    element = $('<section>')
+    container = $('<section>')
       .attr('id', this._sessionId)
       .append($('<header>').text(this._sessionId.replace(/\s.*/, '')))
       .append($('<div>').addClass('term'));
 
-    this._settings.parent.append(element);
-    var div = this.getTerminalDiv(element);
+    this._settings.parent.append(container);
+    var div = this.getTerminalDiv(container);
 
-    var terminal = new BufferedTerminal({
+    const terminal = new BufferedTerminal({
       scrollback: 20000,
       cursorBlink: false,
       cursorStyle: 'block',
@@ -88,6 +91,6 @@ export class SingleConsole {
   }
 
   public terminate() {
-    $('section#' + this._sessionId, parent).addClass('terminated');
+    this.getContainer().addClass('terminated');
   }
 }

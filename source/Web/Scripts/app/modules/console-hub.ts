@@ -1,3 +1,4 @@
+import jquery from 'jquery';
 import { SingleConsole, SingleConsoleSettings } from './single-console';
 import { TextReceived } from './buffered-terminal';
 
@@ -15,7 +16,7 @@ export class ConsoleHub {
   }
 
   private get connection(): SignalR.Hub.Connection {
-    var connection = $.hubConnection(undefined, { logging: true });
+    var connection = jquery.hubConnection(undefined, { logging: true });
 
     connection.error(error =>
       this._settings.status.attr('class', 'error').text(error.message),
@@ -24,22 +25,22 @@ export class ConsoleHub {
     connection.disconnected(async () => await this.connect(connection));
 
     connection.stateChanged(change => {
-      if (change.newState === $.signalR.connectionState.connecting) {
+      if (change.newState === jquery.signalR.connectionState.connecting) {
         this._settings.status.attr('class', 'warning');
         this._settings.status.text('Connecting...');
       }
 
-      if (change.newState === $.signalR.connectionState.reconnecting) {
+      if (change.newState === jquery.signalR.connectionState.reconnecting) {
         this._settings.status.attr('class', 'warning');
         this._settings.status.text('Reconnecting...');
       }
 
-      if (change.newState === $.signalR.connectionState.connected) {
+      if (change.newState === jquery.signalR.connectionState.connected) {
         this._settings.status.attr('class', 'success');
         this._settings.status.text('Online');
       }
 
-      if (change.newState === $.signalR.connectionState.disconnected) {
+      if (change.newState === jquery.signalR.connectionState.disconnected) {
         this._settings.status.attr('class', 'error');
         this._settings.status.text('Disconnected');
       }
