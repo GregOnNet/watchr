@@ -1,5 +1,5 @@
-var reporters = function() {
-  var reporters = ['progress'];
+var reporters = function () {
+  var reporters = ['progress', 'coverage', 'karma-typescript'];
 
   if (process.env.TEAMCITY_PROJECT_NAME !== undefined) {
     reporters.push('teamcity');
@@ -8,7 +8,7 @@ var reporters = function() {
   return reporters;
 };
 
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
     client: {
       jasmine: {
@@ -17,11 +17,11 @@ module.exports = function(config) {
         spec_dir: 'spec',
 
         // Array of filepaths (and globs) relative to spec_dir to include.
-        spec_files: ['**/*_spec.js'],
+        spec_files: ['**/*.spec.ts'],
 
         // Array of filepaths (and globs) relative to spec_dir to include before
         // jasmine specs.
-        helpers: ['helpers/**/*.js'],
+        helpers: ['helpers/**/*.ts'],
         random: true,
         stopOnFailure: true,
       },
@@ -32,7 +32,7 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jasmine'],
+    frameworks: ['jasmine', 'karma-typescript'],
 
     // list of files / patterns to load in the browser
     files: [
@@ -43,12 +43,11 @@ module.exports = function(config) {
       // Generated SignalR proxy (available after build).
       'build/bin/Web/bin/Scripts/lib/server.js',
 
-      // Application code.
-      'source/Web/Scripts/index.js',
-
+      // Jasmine support library.
       'node_modules/jasmine-jquery/lib/jasmine-jquery.js',
 
-      'spec/**/*_spec.js',
+      { pattern: 'source/**/*.ts' },
+      { pattern: 'spec/**/*.spec.ts' },
     ],
 
     // list of files / patterns to exclude
@@ -56,7 +55,10 @@ module.exports = function(config) {
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: {},
+    preprocessors: {
+      'source/**/*.ts': ['karma-typescript', 'coverage'],
+      'spec/**/*.spec.ts': ['karma-typescript'],
+    },
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
