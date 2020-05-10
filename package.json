@@ -33,6 +33,7 @@
     "typescript": "^3.8.3",
     "xterm": "^4.5.0",
     "xterm-addon-fit": "^0.3.0",
+    "xterm-addon-web-links": "^0.3.0",
     "xterm-webfont": "^2.0.0"
   },
   "repository": {

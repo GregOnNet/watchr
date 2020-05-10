@@ -9,6 +9,7 @@ export default {
     'jquery',
     'xterm',
     'xterm-addon-fit',
+    'xterm-addon-web-links',
     'css-element-queries',
     'fontfaceobserver',
   ],
@@ -21,6 +22,7 @@ export default {
       globals: {
         xterm: 'window',
         'xterm-addon-fit': 'FitAddon',
+        'xterm-addon-web-links': 'WebLinksAddon',
         'css-element-queries': 'window',
         fontfaceobserver: 'FontFaceObserver',
       },
@@ -33,6 +35,7 @@ export default {
       globals: {
         xterm: 'window',
         'xterm-addon-fit': 'FitAddon',
+        'xterm-addon-web-links': 'WebLinksAddon',
         'css-element-queries': 'window',
         fontfaceobserver: 'FontFaceObserver',
       },
