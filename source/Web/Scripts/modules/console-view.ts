@@ -72,7 +72,7 @@ export class ConsoleView {
   }
 
   private autoFit(element: Element, fitAddon: FitAddon) {
-    // fitAddon.fit();
+    fitAddon.fit();
     new ResizeSensor(element, () => fitAddon.fit());
   }
 

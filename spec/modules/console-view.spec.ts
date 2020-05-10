@@ -1,9 +1,13 @@
 import { BufferedTerminal } from '../../source/Web/Scripts/modules/buffered-terminal';
 import { ConsoleView } from '../../source/Web/Scripts/modules/console-view';
 import { TextReceived } from '../../source/Web/Scripts/modules/console-hub';
+import * as BufferedTerminalFunctions from '../../source/Web/Scripts/modules/buffered-terminal';
+import { FitAddon } from 'xterm-addon-fit';
+import * as FitAddonFunctions from 'xterm-addon-fit';
 
 describe(ConsoleView.name, () => {
   let terminal: BufferedTerminal;
+  let fitAddon: FitAddon;
   let view: ConsoleView;
   let parent: JQuery<HTMLElement>;
   let hideOnConnection: JQuery<HTMLElement>;
@@ -17,16 +21,19 @@ describe(ConsoleView.name, () => {
     setFixtures(parent.html());
     setFixtures(hideOnConnection.html());
 
-    terminal = jasmine.createSpyObj('BufferedTerminal', [
-      'loadWebfontAndOpen',
-      'writeBuffered',
-    ]);
+    terminal = jasmine.createSpyObj('BufferedTerminal', {
+      loadAddon: undefined,
+      loadWebfontAndOpen: new Promise(resolve => resolve(terminal)),
+      writeBuffered: { buffering: false },
+    });
 
-    (terminal as any).loadWebfontAndOpen.and.returnValue(
-      new Promise(resolve => resolve(terminal)),
+    spyOn(BufferedTerminalFunctions, 'BufferedTerminal').and.returnValue(
+      terminal,
     );
 
-    // spyOn(window, 'BufferedTerminal').and.returnValue(terminal);
+    fitAddon = jasmine.createSpyObj('FitAddon', ['fit']);
+
+    spyOn(FitAddonFunctions, 'FitAddon').and.returnValue(fitAddon);
 
     view = new ConsoleView(
       { parent: parent, hideOnConnection: hideOnConnection },
@@ -79,7 +86,7 @@ describe(ConsoleView.name, () => {
     });
 
     it('fits the terminal to the screen', () => {
-      // expect((terminal as any).fit).toHaveBeenCalled();
+      expect(fitAddon.fit).toHaveBeenCalled();
     });
 
     describe('terminal is not buffering', () => {
@@ -90,14 +97,11 @@ describe(ConsoleView.name, () => {
 
     describe('terminal is buffering', () => {
       beforeEach(async () => {
-        const early = {
-          SessionId: sessionId,
-          StartOffset: event.EndOffset + 1,
-          EndOffset: event.EndOffset + 1 + 'early'.length,
-          Text: 'early',
-        };
+        (terminal.writeBuffered as jasmine.Spy).and.returnValue({
+          buffering: true,
+        });
 
-        await view.textReceived(early);
+        await view.textReceived(event);
       });
 
       it('marks container as delayed', () => {
