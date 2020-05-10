@@ -1,4 +1,6 @@
 import { ConsoleHub } from '../../source/Web/Scripts/modules/console-hub';
+import * as ConsoleViewFunctions from '../../source/Web/Scripts/modules/console-view';
+import { ConsoleView } from '../../source/Web/Scripts/modules/console-view';
 
 describe(ConsoleHub.name, () => {
   let group: string;
@@ -89,42 +91,52 @@ describe(ConsoleHub.name, () => {
     });
   });
 
-  // describe('running', () =>  {
-  //   beforeEach(() =>  {
-  //     console = jasmine.createSpyObj('ConsoleView',
-  //                                         ['text', 'terminate']);
+  describe('runtime', () => {
+    const sessionId = 'session id';
+    let console: ConsoleView;
 
-  //     spyOn(window, 'SingleConsole').and.returnValue(console);
+    beforeEach(async () => {
+      console = jasmine.createSpyObj('ConsoleView', [
+        'textReceived',
+        'terminate',
+      ]);
 
-  //     new ConsoleHub(window, parent, welcome);
-  //   });
+      spyOn(ConsoleViewFunctions, 'ConsoleView').and.returnValue(console);
 
-  //   describe('text received', () =>  {
-  //     beforeEach(() =>  {
-  //       text = { SessionId: 'id', Offset: 0, Text: 'text' };
+      await new ConsoleHub().setUp({
+        parent: parent,
+        hideOnConnection: hideOnConnection,
+        status: status,
+      });
+    });
 
-  //       var textfn = hub.on.calls.argsFor(0)[1];
-  //       textfn(text);
-  //     });
+    describe('text received', () => {
+      let text = {
+        SessionId: sessionId,
+        StartOffset: 0,
+        EndOffset: 'text'.length,
+        Text: 'text',
+      };
 
-  //     it('sends text to the console', () =>  {
-  //       expect(console.text)
-  //         .toHaveBeenCalledWith(text);
-  //     });
-  //   });
+      beforeEach(() => {
+        const subscriber = (hub.on as jasmine.Spy).calls.argsFor(0)[1];
+        subscriber(text);
+      });
 
-  //   describe('session terminated', () =>  {
-  //     beforeEach(() =>  {
-  //       sessionId = 'id';
+      it('sends text to the console', () => {
+        expect(console.textReceived).toHaveBeenCalledWith(text);
+      });
+    });
 
-  //       var terminatefn = hub.on.calls.argsFor(1)[1];
-  //       terminatefn(sessionId);
-  //     });
+    describe('session terminated', () => {
+      beforeEach(() => {
+        const subscriber = (hub.on as jasmine.Spy).calls.argsFor(1)[1];
+        subscriber(sessionId);
+      });
 
-  //     it('terminates the console', () =>  {
-  //       expect(console.terminate)
-  //         .toHaveBeenCalled();
-  //     });
-  //   });
-  // });
+      it('terminates the console', () => {
+        expect(console.terminate).toHaveBeenCalled();
+      });
+    });
+  });
 });

@@ -3,7 +3,7 @@ import { Block } from './buffered-terminal';
 
 interface ConsoleHubSettings extends ConsoleViewSettings {
   status: JQuery<HTMLElement>;
-  group: string;
+  group?: string;
 }
 
 export interface TextReceived extends Block {
