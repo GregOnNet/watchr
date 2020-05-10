@@ -31,9 +31,9 @@ export class ConsoleHub {
       this._settings.status.attr('class', 'error').text(error.message),
     );
 
-    this._connection.disconnected(
-      async () => await this.connect(this._connection),
-    );
+    this._connection.disconnected(() => {
+      setTimeout(() => this.connect(this._connection), 5000);
+    });
 
     this._connection.stateChanged(change => {
       if (change.newState === jQuery.signalR.connectionState.connecting) {
