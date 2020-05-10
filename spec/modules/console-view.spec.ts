@@ -23,7 +23,7 @@ describe(ConsoleView.name, () => {
 
     terminal = jasmine.createSpyObj('BufferedTerminal', {
       loadAddon: undefined,
-      loadWebfontAndOpen: new Promise(resolve => resolve(terminal)),
+      loadWebfontAndOpen: Promise.resolve(terminal),
       writeBuffered: { buffering: false },
     });
 

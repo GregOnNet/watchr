@@ -3,6 +3,7 @@ import { Block } from './buffered-terminal';
 
 interface ConsoleHubSettings extends ConsoleViewSettings {
   status: JQuery<HTMLElement>;
+  group: string;
 }
 
 export interface TextReceived extends Block {
@@ -10,24 +11,31 @@ export interface TextReceived extends Block {
 }
 
 export class ConsoleHub {
-  _settings: ConsoleHubSettings;
+  private _settings: ConsoleHubSettings;
+  private _connection: SignalR.Hub.Connection;
 
-  public setUp(settings: ConsoleHubSettings) {
+  public async setUp(settings: ConsoleHubSettings) {
     this._settings = settings;
 
-    this.connect(this.connection);
+    await this.connect(this.connection);
   }
 
   private get connection(): SignalR.Hub.Connection {
-    var connection = jQuery.hubConnection(undefined, { logging: true });
+    if (this._connection) {
+      return this._connection;
+    }
 
-    connection.error(error =>
+    this._connection = jQuery.hubConnection(undefined, { logging: true });
+
+    this._connection.error(error =>
       this._settings.status.attr('class', 'error').text(error.message),
     );
 
-    connection.disconnected(async () => await this.connect(connection));
+    this._connection.disconnected(
+      async () => await this.connect(this._connection),
+    );
 
-    connection.stateChanged(change => {
+    this._connection.stateChanged(change => {
       if (change.newState === jQuery.signalR.connectionState.connecting) {
         this._settings.status.attr('class', 'warning');
         this._settings.status.text('Connecting...');
@@ -49,10 +57,10 @@ export class ConsoleHub {
       }
     });
 
-    return connection;
+    return this.connection;
   }
 
-  private get hub() {
+  private get hub(): SignalR.Hub.Proxy {
     var hub = this.connection.createHubProxy('consoleHub');
 
     hub.on('text', async (text: TextReceived) => {
@@ -72,8 +80,8 @@ export class ConsoleHub {
     await connection.start();
 
     try {
-      await this.hub.invoke('joinGroup', window.location.search);
-      console.log('Joined group with ' + window.location.search);
+      await this.hub.invoke('joinGroup', this._settings.group);
+      console.log('Joined group with ' + this._settings.group);
     } catch (error) {
       console.log('Could not join group. Error: ' + error);
     }

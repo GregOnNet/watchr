@@ -3,11 +3,12 @@ import { ConsoleView } from './modules/console-view';
 import { BufferedTerminal } from './modules/buffered-terminal';
 import { Terminal } from 'xterm';
 
-jQuery(function () {
-  new ConsoleHub().setUp({
+jQuery(async () => {
+  await new ConsoleHub().setUp({
     parent: jQuery('#terminals'),
     hideOnConnection: jQuery('#welcome'),
     status: jQuery('#status'),
+    group: window.location.search,
   });
 });
 
