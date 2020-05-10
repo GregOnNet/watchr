@@ -4,7 +4,8 @@ import typescript2 from 'rollup-plugin-typescript2';
 import { terser } from 'rollup-plugin-terser';
 
 export default {
-  external: ['jquery'],
+  // Stuff loaded from cdnjs.
+  external: ['jquery', 'xterm', 'css-element-queries', 'fontfaceobserver'],
   input: 'source/Web/Scripts/index.ts',
   output: [
     {
@@ -12,6 +13,11 @@ export default {
       format: 'iife',
       name: 'window',
       extend: true,
+      globals: {
+        xterm: 'window',
+        'css-element-queries': 'window',
+        fontfaceobserver: 'FontFaceObserver',
+      },
     },
     {
       file: 'source/Web/Scripts/index.min.js',
@@ -19,6 +25,11 @@ export default {
       sourcemap: true,
       name: 'window',
       extend: true,
+      globals: {
+        xterm: 'window',
+        'css-element-queries': 'window',
+        fontfaceobserver: 'FontFaceObserver',
+      },
     },
   ],
   plugins: [
