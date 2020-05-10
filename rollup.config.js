@@ -11,8 +11,7 @@ export default {
     {
       file: 'source/Web/Scripts/index.js',
       format: 'iife',
-      name: 'window',
-      extend: true,
+      name: 'Watchr',
       globals: {
         xterm: 'window',
         'css-element-queries': 'window',
@@ -23,8 +22,7 @@ export default {
       file: 'source/Web/Scripts/index.min.js',
       format: 'iife',
       sourcemap: true,
-      name: 'window',
-      extend: true,
+      name: 'Watchr',
       globals: {
         xterm: 'window',
         'css-element-queries': 'window',
