@@ -60,7 +60,14 @@ export class ConsoleView {
       },
     });
 
-    terminal.loadAddon(new XtermWebfont());
+    // This is borked when rolled up.
+    try {
+      terminal.loadAddon(new XtermWebfont());
+    } catch {
+      (terminal as any).loadWebfontAndOpen = (el: HTMLElement) =>
+        terminal.open(el);
+    }
+
     terminal.loadAddon(new WebLinksAddon());
     const fitAddon = new FitAddon();
     terminal.loadAddon(fitAddon);
