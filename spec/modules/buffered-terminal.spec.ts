@@ -1,6 +1,7 @@
 import {
   BufferedTerminal,
   Block,
+  WriteBufferedResult,
 } from '../../source/Web/Scripts/modules/buffered-terminal';
 import { Terminal } from 'xterm';
 
@@ -16,38 +17,44 @@ describe(BufferedTerminal.name, () => {
 
   describe('buffered write', () => {
     describe('start at the beginning', () => {
-      let block: Block = {
+      const block: Block = {
         StartOffset: 0,
         EndOffset: 'line 1'.length,
         Text: 'line 1',
       };
+      let result: WriteBufferedResult;
 
-      beforeEach(() => terminal.writeBuffered(block));
+      beforeEach(() => {
+        result = terminal.writeBuffered(block);
+      });
 
       it('writes text', () => {
         expect(writeSpy).toHaveBeenCalledWith(block.Text);
       });
 
-      it('has no backlog', () => {
-        expect(terminal._backlog.length).toEqual(0);
+      it('does not buffer', () => {
+        expect(result.buffering).toBeFalse();
       });
     });
 
     describe('start with unseen blocks', () => {
-      let block: Block = {
+      const block: Block = {
         StartOffset: 42,
         EndOffset: 'line 1'.length,
         Text: 'line 1',
       };
+      let result: WriteBufferedResult;
 
-      beforeEach(() => terminal.writeBuffered(block));
+      beforeEach(() => {
+        result = terminal.writeBuffered(block);
+      });
 
       it('writes text', () => {
         expect(writeSpy).toHaveBeenCalledWith(block.Text);
       });
 
-      it('has no backlog', () => {
-        expect(terminal._backlog.length).toEqual(0);
+      it('does not buffer', () => {
+        expect(result.buffering).toBeFalse();
       });
     });
 
@@ -64,8 +71,11 @@ describe(BufferedTerminal.name, () => {
           Text: 'line 2',
         },
       ];
+      let result: WriteBufferedResult[];
 
-      beforeEach(() => blocks.forEach(b => terminal.writeBuffered(b)));
+      beforeEach(() => {
+        result = blocks.map(b => terminal.writeBuffered(b));
+      });
 
       it('writes all text', () => {
         const text = blocks.map(b => [b.Text]);
@@ -73,8 +83,8 @@ describe(BufferedTerminal.name, () => {
         expect(writeSpy.calls.allArgs()).toEqual(text);
       });
 
-      it('has no backlog', () => {
-        expect(terminal._backlog.length).toEqual(0);
+      it('does not buffer', () => {
+        result.forEach(r => expect(r.buffering).toBeFalse());
       });
     });
 
@@ -97,9 +107,11 @@ describe(BufferedTerminal.name, () => {
         Text: '-early',
       };
 
+      let result: WriteBufferedResult;
+
       beforeEach(() => {
         terminal.writeBuffered(first);
-        terminal.writeBuffered(early);
+        result = terminal.writeBuffered(early);
       });
 
       it('does not write early text', () => {
@@ -108,20 +120,20 @@ describe(BufferedTerminal.name, () => {
         expect(writeSpy.calls.allArgs()).toEqual(text);
       });
 
-      it('stores early block to backlog', () => {
-        expect(terminal._backlog[0]).toEqual(early);
+      it('buffers block', () => {
+        expect(result.buffering).toBeTrue();
       });
 
       describe('delay resolved', () => {
         beforeEach(() => {
-          terminal.writeBuffered(late);
+          result = terminal.writeBuffered(late);
         });
 
-        it('has no backlog', () => {
-          expect(terminal._backlog.length).toEqual(0);
+        it('does not buffer', () => {
+          expect(result.buffering).toBeFalse();
         });
 
-        it('write backlog block text', () => {
+        it('writes backlog block text', () => {
           const text = [first, late, early].map(b => [b.Text]);
 
           expect(writeSpy.calls.allArgs()).toEqual(text);

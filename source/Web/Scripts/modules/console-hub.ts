@@ -1,7 +1,7 @@
-import { SingleConsole, SingleConsoleSettings } from './single-console';
+import { ConsoleView, ConsoleViewSettings } from './console-view';
 import { Block } from './buffered-terminal';
 
-interface ConsoleHubSettings extends SingleConsoleSettings {
+interface ConsoleHubSettings extends ConsoleViewSettings {
   status: JQuery<HTMLElement>;
 }
 
@@ -56,13 +56,13 @@ export class ConsoleHub {
     var hub = this.connection.createHubProxy('consoleHub');
 
     hub.on('text', async (text: TextReceived) => {
-      const console = new SingleConsole(this._settings, text.SessionId);
-      await console.textReceived(text);
+      const view = new ConsoleView(this._settings, text.SessionId);
+      await view.textReceived(text);
     });
 
     hub.on('terminate', (sessionId: string) => {
-      const console = new SingleConsole(this._settings, sessionId);
-      console.terminate();
+      const view = new ConsoleView(this._settings, sessionId);
+      view.terminate();
     });
 
     return hub;

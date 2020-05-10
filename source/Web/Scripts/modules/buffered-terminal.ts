@@ -6,15 +6,21 @@ export interface Block {
   Text: string;
 }
 
-export class BufferedTerminal extends Terminal {
-  _backlog: Block[] = [];
-  _nextOffset = 0;
+export interface WriteBufferedResult {
+  buffering: boolean;
+}
 
-  public writeBuffered(text: Block) {
+export class BufferedTerminal extends Terminal {
+  private _backlog: Block[] = [];
+  private _nextOffset = 0;
+
+  public writeBuffered(text: Block): WriteBufferedResult {
     this.saveToBacklog(text);
     this.applyBacklog();
 
-    return this._backlog.length === 0;
+    return {
+      buffering: this._backlog.length !== 0,
+    };
   }
 
   private saveToBacklog(block: Block) {
