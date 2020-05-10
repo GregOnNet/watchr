@@ -1,8 +1,12 @@
 import { SingleConsole, SingleConsoleSettings } from './single-console';
-import { TextReceived } from './buffered-terminal';
+import { Block } from './buffered-terminal';
 
 interface ConsoleHubSettings extends SingleConsoleSettings {
   status: JQuery<HTMLElement>;
+}
+
+export interface TextReceived extends Block {
+  SessionId?: string;
 }
 
 export class ConsoleHub {

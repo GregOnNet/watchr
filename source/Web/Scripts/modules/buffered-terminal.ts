@@ -1,25 +1,24 @@
 import { Terminal } from 'xterm';
 
-export interface TextReceived {
-  SessionId: string;
+export interface Block {
   StartOffset: number;
   EndOffset: number;
   Text: string;
 }
 
 export class BufferedTerminal extends Terminal {
-  _backlog: TextReceived[] = [];
+  _backlog: Block[] = [];
   _nextOffset = 0;
 
-  public writeBuffered(text: TextReceived) {
+  public writeBuffered(text: Block) {
     this.saveToBacklog(text);
     this.applyBacklog();
 
     return this._backlog.length === 0;
   }
 
-  private saveToBacklog(text: TextReceived) {
-    this._backlog.push(text);
+  private saveToBacklog(block: Block) {
+    this._backlog.push(block);
   }
 
   private applyBacklog() {
@@ -28,11 +27,11 @@ export class BufferedTerminal extends Terminal {
       .filter(item => !this.apply(item));
   }
 
-  private apply(text: TextReceived): boolean {
-    if (this._nextOffset === text.StartOffset || this._nextOffset === 0) {
-      this._nextOffset = text.EndOffset;
+  private apply(block: Block): boolean {
+    if (this._nextOffset === block.StartOffset || this._nextOffset === 0) {
+      this._nextOffset = block.EndOffset;
 
-      this.write(text.Text);
+      this.write(block.Text);
       return true;
     }
 

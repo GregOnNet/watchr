@@ -1,8 +1,6 @@
-import {
-  BufferedTerminal,
-  TextReceived,
-} from '../../source/Web/Scripts/modules/buffered-terminal';
+import { BufferedTerminal } from '../../source/Web/Scripts/modules/buffered-terminal';
 import { SingleConsole } from '../../source/Web/Scripts/modules/single-console';
+import { TextReceived } from '../../source/Web/Scripts/modules/console-hub';
 
 describe(SingleConsole.name, () => {
   let terminal: BufferedTerminal;

@@ -1,8 +1,9 @@
-import { BufferedTerminal, TextReceived } from './buffered-terminal';
+import { BufferedTerminal, Block } from './buffered-terminal';
 import { FitAddon } from 'xterm-addon-fit';
 import * as XtermWebfont from 'xterm-webfont';
 import { ResizeSensor } from 'css-element-queries';
 import { Terminal } from 'xterm';
+import { TextReceived } from './console-hub';
 
 export interface SingleConsoleSettings {
   parent: JQuery<HTMLElement>;
