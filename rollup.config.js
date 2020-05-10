@@ -4,8 +4,14 @@ import typescript2 from 'rollup-plugin-typescript2';
 import { terser } from 'rollup-plugin-terser';
 
 export default {
-  // Stuff loaded from cdnjs.
-  external: ['jquery', 'xterm', 'css-element-queries', 'fontfaceobserver'],
+  // Stuff loaded from the CDN.
+  external: [
+    'jquery',
+    'xterm',
+    'xterm-addon-fit',
+    'css-element-queries',
+    'fontfaceobserver',
+  ],
   input: 'source/Web/Scripts/index.ts',
   output: [
     {
@@ -14,6 +20,7 @@ export default {
       name: 'Watchr',
       globals: {
         xterm: 'window',
+        'xterm-addon-fit': 'FitAddon',
         'css-element-queries': 'window',
         fontfaceobserver: 'FontFaceObserver',
       },
@@ -25,6 +32,7 @@ export default {
       name: 'Watchr',
       globals: {
         xterm: 'window',
+        'xterm-addon-fit': 'FitAddon',
         'css-element-queries': 'window',
         fontfaceobserver: 'FontFaceObserver',
       },
